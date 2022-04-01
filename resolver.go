@@ -31,7 +31,7 @@ func (r *resolver) call(p json.RawMessage, i string) (interface{}, error) {
 	} else if r.hasArgumentsAndIdentity() {
 		pld := payload{p}
 		args, err = pld.parse(reflect.TypeOf(r.function).In(0))
-		args = append(args, reflect.ValueOf(i).Elem())
+		args = append(args, reflect.ValueOf(i))
 
 		if err != nil {
 			return nil, err
