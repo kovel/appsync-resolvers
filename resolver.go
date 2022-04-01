@@ -33,7 +33,7 @@ func (r *resolver) call(p json.RawMessage, i string) (interface{}, error) {
 		args, err = pld.parse(reflect.TypeOf(r.function).In(0))
 
 		identity := reflect.New(reflect.TypeOf(r.function).In(1))
-		identity.Set(reflect.ValueOf(&i))
+		identity.SetString(i)
 		args = append(args, identity.Elem())
 
 		if err != nil {
