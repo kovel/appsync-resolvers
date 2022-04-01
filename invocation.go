@@ -18,7 +18,7 @@ func (in invocation) isRoot() bool {
 }
 
 func (in invocation) identity() string {
-	return in.Identity
+	return in.Context.Identity
 }
 
 func (in invocation) payload() json.RawMessage {
