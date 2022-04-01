@@ -2,7 +2,6 @@ package resolvers
 
 import (
 	"encoding/json"
-	"fmt"
 	"reflect"
 )
 
@@ -18,9 +17,8 @@ func (r *resolver) hasArgumentsAndIdentity() bool {
 	return reflect.TypeOf(r.function).NumIn() == 2
 }
 
-func (r *resolver) call(p json.RawMessage, i json.RawMessage) (interface{}, error) {
+func (r *resolver) call(p json.RawMessage, i string) (interface{}, error) {
 	var args []reflect.Value
-	var identityArg reflect.Value
 	var err error
 
 	if r.hasArguments() {
@@ -35,17 +33,15 @@ func (r *resolver) call(p json.RawMessage, i json.RawMessage) (interface{}, erro
 		args, err = pld.parse(reflect.TypeOf(r.function).In(0))
 
 		identity := reflect.New(reflect.TypeOf(r.function).In(1))
-		if err := json.Unmarshal(i, identity.Interface()); err != nil {
-			return nil, fmt.Errorf("Unable to prepare payload: %s", err.Error())
-		}
-		identityArg = identity.Elem()
+		identity.Set(reflect.ValueOf(i))
+		args = append(args, identity.Elem())
 
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	returnValues := reflect.ValueOf(r.function).Call(append(args, identityArg))
+	returnValues := reflect.ValueOf(r.function).Call(args)
 	var returnData interface{}
 	var returnError error
 
