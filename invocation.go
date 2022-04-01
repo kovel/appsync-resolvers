@@ -5,12 +5,12 @@ import "encoding/json"
 type context struct {
 	Arguments json.RawMessage `json:"arguments"`
 	Source    json.RawMessage `json:"source"`
+	Identity  string          `json:"identity"`
 }
 
 type invocation struct {
-	Resolve  string  `json:"resolve"`
-	Context  context `json:"context"`
-	Identity string  `json:"identity"`
+	Resolve string  `json:"resolve"`
+	Context context `json:"context"`
 }
 
 func (in invocation) isRoot() bool {
