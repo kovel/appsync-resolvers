@@ -25,6 +25,13 @@ func (r *resolver) call(p json.RawMessage, i string) (interface{}, error) {
 	if r.hasArguments() {
 		pld := payload{p, i}
 		args, err = pld.parse(reflect.TypeOf(r.function).In(0))
+
+		if err != nil {
+			return nil, err
+		}
+	} else if r.hasArgumentsAndIdentity() {
+		pld := payload{p, i}
+		args, err = pld.parse(reflect.TypeOf(r.function).In(0))
 		args2, err = pld.parse(reflect.TypeOf(r.function).In(1))
 
 		if err != nil {
