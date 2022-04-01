@@ -5,12 +5,12 @@ import "encoding/json"
 type context struct {
 	Arguments json.RawMessage `json:"arguments"`
 	Source    json.RawMessage `json:"source"`
-	Identity  string          `json:"identity"`
 }
 
 type invocation struct {
-	Resolve string  `json:"resolve"`
-	Context context `json:"context"`
+	Resolve  string  `json:"resolve"`
+	Context  context `json:"context"`
+	Identity string  `json:"identity"`
 }
 
 func (in invocation) isRoot() bool {
@@ -18,7 +18,7 @@ func (in invocation) isRoot() bool {
 }
 
 func (in invocation) identity() string {
-	return in.Context.Identity
+	return in.Identity
 }
 
 func (in invocation) payload() json.RawMessage {
