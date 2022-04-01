@@ -7,8 +7,7 @@ import (
 )
 
 type payload struct {
-	Message  json.RawMessage
-	Identity string
+	Message json.RawMessage
 }
 
 func (p payload) parse(argsType reflect.Type) ([]reflect.Value, error) {
