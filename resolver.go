@@ -13,12 +13,23 @@ func (r *resolver) hasArguments() bool {
 	return reflect.TypeOf(r.function).NumIn() == 1
 }
 
-func (r *resolver) call(p json.RawMessage) (interface{}, error) {
+func (r *resolver) hasArgumentsAndIdentity() bool {
+	return reflect.TypeOf(r.function).NumIn() == 2
+}
+
+func (r *resolver) call(p json.RawMessage, identity string) (interface{}, error) {
 	var args []reflect.Value
 	var err error
 
 	if r.hasArguments() {
-		pld := payload{p}
+		pld := payload{p, nil}
+		args, err = pld.parse(reflect.TypeOf(r.function).In(0))
+
+		if err != nil {
+			return nil, err
+		}
+	} else if r.hasArgumentsAndIdentity() {
+		pld := payload{p, &identity}
 		args, err = pld.parse(reflect.TypeOf(r.function).In(0))
 
 		if err != nil {
