@@ -17,10 +17,6 @@ func (r *resolver) hasArgumentsAndIdentity() bool {
 	return reflect.TypeOf(r.function).NumIn() == 2
 }
 
-func parseIdentity() {
-	args := reflect.New(string)
-}
-
 func (r *resolver) call(p json.RawMessage, i string) (interface{}, error) {
 	var args []reflect.Value
 	var identityArg reflect.Value
